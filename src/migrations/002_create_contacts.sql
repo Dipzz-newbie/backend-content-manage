@@ -1,0 +1,10 @@
+-- Create contacts table
+CREATE TABLE IF NOT EXISTS contacts (
+    id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NULL,
+    email VARCHAR(200) NULL,
+    phone VARCHAR(20) NULL,
+    username VARCHAR(100) NOT NULL,
+    FOREIGN KEY (username) REFERENCES users(username) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

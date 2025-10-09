@@ -231,7 +231,11 @@ GET /api/contacts
 
 * `Authorization: token`
 
-Query params : - name : Search by first_name or last_name, using like, optional - email : Search by email using like, optional - phone : Search by phone using like, optional - page : number of page, default 1 - size : size per page, default 10 Response Body Success :
+Query params: - name : Search by first_name or last_name, using like, **optional** 
+              - email : Search by email using like, **optional** 
+              - phone : Search by phone using like, **optional** 
+              - page : number of page, default 1 
+              - size : size per page, default 10 Response Body Success 
 
 Response Body Success :
 

@@ -100,6 +100,7 @@ http://localhost:8080
 
 ### 🔸 Create Contact
 
+
 ```http
 POST /api/contacts
 ```
@@ -108,14 +109,36 @@ POST /api/contacts
 
 * `Authorization: token`
 
-**Body:**
+Request Body :
 
 ```json
 {
-  "first_name": "Muhh",
-  "last_name": "Dipzz",
-  "email": "dipz@example.com",
-  "phone": "32423423434"
+  "first_name" : "Eko",
+  "last_name" : "Khannedy",
+  "email" : "eko@pzn.com",
+  "phone" : "32423423434"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "first_name" : "Eko",
+    "last_name" : "Khannedy",
+    "email" : "eko@pzn.com",
+    "phone" : "32423423434"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Email is not valid format"
 }
 ```
 
@@ -123,6 +146,43 @@ POST /api/contacts
 
 ```http
 PUT /api/contacts/:id
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Request Body :
+
+```json
+{
+  "first_name" : "Muhh",
+  "last_name" : "Dipzz",
+  "email" : "dipzz@pzn.com",
+  "phone" : "32423423434"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "first_name" : "Muhh",
+    "last_name" : "Dipzz",
+    "email" : "dipzz@example.com",
+    "phone" : "32423423434"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Email is not valid format"
+}
 ```
 
 **Same format as create.**
@@ -133,10 +193,80 @@ PUT /api/contacts/:id
 GET /api/contacts/:id
 ```
 
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "first_name" : "Dipzz",
+    "last_name" : "Muhh",
+    "email" : "dipzz@example.com",
+    "phone" : "32423423434"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Contact is not found"
+}
+```
+
+
+
 ### 🔸 Search Contacts
 
 ```http
-GET /api/contacts?name=Dipz&email=dipz@example.com&page=1&size=10
+GET /api/contacts
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Query params : - name : Search by first_name or last_name, using like, optional - email : Search by email using like, optional - phone : Search by phone using like, optional - page : number of page, default 1 - size : size per page, default 10 Response Body Success :
+
+Response Body Success :
+
+```json
+{
+  "data" : [
+    {
+      "id" : 1,
+      "first_name" : "Muhh",
+      "last_name" : "Dipzz",
+      "email" : "dipzz@example.com",
+      "phone" : "32423423434"
+    },
+    {
+      "id" : 2,
+      "first_name" : "Muhh",
+      "last_name" : "Dipzz",
+      "email" : "Dipzz@example.com",
+      "phone" : "32423423434"
+    }
+  ],
+  "paging" : {
+    "page" : 1,
+    "total_page" : 3,
+    "total_item" : 30
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Email is not valid format"
+}
 ```
 
 ### 🔸 Delete Contact
@@ -145,20 +275,76 @@ GET /api/contacts?name=Dipz&email=dipz@example.com&page=1&size=10
 DELETE /api/contacts/:id
 ```
 
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success :
+
+```json
+{
+  "data" : "OK"
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Contact is not found"
+}
+```
+
 ---
 
 ## 🏠 Address API
 
 All endpoints require:
 
-**Headers:**
-
-* `Authorization: token`
 
 ### 🔸 Create Address
 
 ```http
 POST /api/contacts/:contactId/addresses
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Request Body :
+
+```json
+{
+  "street" : "Jalan apa",
+  "city" : "Kota apa",
+  "province" : "Provinsi apa",
+  "country" : "Negara apa",
+  "postal_code" : "Kode pos"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "street" : "Jalan apa",
+    "city" : "Kota apa",
+    "province" : "Provinsi apa",
+    "country" : "Negara apa",
+    "postal_code" : "Kode pos"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Country is required" 
+}
 ```
 
 ### 🔸 Update Address
@@ -167,10 +353,75 @@ POST /api/contacts/:contactId/addresses
 PUT /api/contacts/:contactId/addresses/:addressId
 ```
 
+**Headers:**
+
+* `Authorization: token`
+
+Request Body :
+```json
+{
+  "street" : "Jalan apa",
+  "city" : "Kota apa",
+  "province" : "Provinsi apa",
+  "country" : "Negara apa",
+  "postal_code" : "Kode pos"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "street" : "Jalan apa",
+    "city" : "Kota apa",
+    "province" : "Provinsi apa",
+    "country" : "Negara apa",
+    "postal_code" : "Kode pos"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Country is required"
+}
+```
+
 ### 🔸 Get Address by ID
 
 ```http
 GET /api/contacts/:contactId/addresses/:addressId
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "street" : "Jalan apa",
+    "city" : "Kota apa",
+    "province" : "Provinsi apa",
+    "country" : "Negara apa",
+    "postal_code" : "Kode pos"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "contact is not found"
+}
 ```
 
 ### 🔸 List All Addresses
@@ -179,10 +430,67 @@ GET /api/contacts/:contactId/addresses/:addressId
 GET /api/contacts/:contactId/addresses
 ```
 
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success :
+
+```json 
+{
+  "data" : [
+    {
+      "id" : 1,
+      "street" : "Jalan apa",
+      "city" : "Kota apa",
+      "province" : "Provinsi apa",
+      "country" : "Negara apa",
+      "postal_code" : "Kode pos"
+    },
+    {
+      "id" : 1,
+      "street" : "Jalan apa",
+      "city" : "Kota apa",
+      "province" : "Provinsi apa",
+      "country" : "Negara apa",
+      "postal_code" : "Kode pos"
+    }
+  ]
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "contact is not found"
+}
+```
+
 ### 🔸 Delete Address
 
 ```http
 DELETE /api/contacts/:contactId/addresses/:addressId
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success :
+
+```json
+{
+  "data" : "OK"
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "address is not found"
+}
 ```
 
 > ✅ Response formats follow a consistent structure with `data` on success and `errors` on failure.
@@ -197,7 +505,7 @@ DELETE /api/contacts/:contactId/addresses/:addressId
 POST /api/users
 ```
 
-**Body:**
+Request Body :
 
 ```json
 {
@@ -207,19 +515,55 @@ POST /api/users
 }
 ```
 
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "username" : "MuhhDipzz",
+    "name" : "Dipzz"
+  }
+}
+```
+
+Response Body Error : 
+
+```json
+{
+  "errors" : "Username already registered"
+}
+```
+
 ### 🔸 Login
 
 ```http
 POST /api/users/login
 ```
 
-**Response:**
+Request Body :
 
 ```json
 {
-  "data": {
-    "token": "unique-token"
+  "username" : "dipzz",
+  "password" : "rahasia"
+}
+```
+
+Response Body Success : 
+
+```json
+{
+  "data" : {
+    "token" : "unique-token"
   }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Username or password wrong"
 }
 ```
 
@@ -229,12 +573,35 @@ POST /api/users/login
 PATCH /api/users/current
 ```
 
-**Optional fields:**
+**Headers:**
+
+* `Authorization: token`
+
+Request Body :
 
 ```json
 {
-  "name": "Updated Name",
-  "password": "newpassword"
+  "name" : "newName", // optional
+  "password" : "new password" // optional
+}
+```
+
+Response Body Success : 
+
+```json
+{
+  "data" : {
+    "username" : "Dipzz",
+    "name" : "newName"
+  }
+}
+```
+
+Response Body Error : 
+
+```json
+{
+  "errors" : "Name length max 100"
 }
 ```
 
@@ -244,10 +611,53 @@ PATCH /api/users/current
 GET /api/users/current
 ```
 
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success:
+
+```json
+{
+  "data" : {
+    "username" : "MuhhDipzz",
+    "name" : "Dipzz"
+  }
+}
+```
+
+Response Body Error : 
+
+```json
+{
+  "errors" : "Unauthorized"
+}
+```
+
 ### 🔸 Logout
 
 ```http
 DELETE /api/users/logout
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success : 
+
+```json
+{
+  "data" : "OK"
+}
+```
+
+Response Body Error : 
+
+```json
+{
+  "errors" : "Unauthorized"
+}
 ```
 
 ---

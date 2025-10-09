@@ -113,9 +113,9 @@ Request Body :
 
 ```json
 {
-  "first_name" : "Eko",
-  "last_name" : "Khannedy",
-  "email" : "eko@pzn.com",
+  "first_name" : "Dipzz",
+  "last_name" : "Muhh",
+  "email" : "dipzz@example.com",
   "phone" : "32423423434"
 }
 ```
@@ -126,9 +126,9 @@ Response Body Success :
 {
   "data" : {
     "id" : 1,
-    "first_name" : "Eko",
-    "last_name" : "Khannedy",
-    "email" : "eko@pzn.com",
+    "first_name" : "Dipzz",
+    "last_name" : "Muhh",
+    "email" : "dipz@example.com",
     "phone" : "32423423434"
   }
 }

@@ -1,42 +1,46 @@
+
 ---
 
 # 🦀 Backend Content Management API
 
-A fast, reliable, and modular RESTful API built with **Rust** for managing content-driven backend systems. Designed for scalability and performance, leveraging Rust’s safety and speed.
+A fast, reliable, and modular **RESTful API** built with **Rust** for managing content-driven backend systems. Designed for **scalability**, **performance**, and **real-world scenarios**, leveraging Rust’s safety and speed.
 
 ---
 
 ## 📦 Features
 
-* ⚙️ **RESTful API** architecture
+* ⚙️ RESTful API architecture
 * 🧱 Modular code structure (`src/`, `migrations/`, etc.)
 * 🛢️ Database support with migration handling
 * 📄 JSON-based request/response
-* 🚀 Built for learning, extensibility, and real-world backend scenarios
+* 🔐 Token-based authentication
+* 🚀 Built for learning, extensibility, and real-world backend patterns
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Tool / Library                | Purpose                     |
-| ----------------------------- | --------------------------- |
-| **Rust**                      | Main programming language   |
-| **Actix-web** *(assumed)*     | Web framework               |
-| **Diesel / SQLx** *(assumed)* | ORM / DB interaction        |
-| **PostgreSQL** *(or other)*   | Relational database backend |
+| Tool / Library          | Description               |
+| ----------------------- | ------------------------- |
+| **Rust**                | Systems-level programming |
+| **Actix-web** (assumed) | Web framework for Rust    |
+| **Diesel / SQLx**       | ORM and database access   |
+| **PostgreSQL**          | Relational database       |
+| **dotenv**              | Environment config        |
 
-> ⚠️ Replace the above stack with the actual crates used in your `Cargo.toml`.
+> ℹ️ **Note:** Please update actual crates used in `Cargo.toml` if different from assumptions above.
 
 ---
 
 ## 📁 Project Structure
 
-```bash
+```
 .
-├── migrations/        # DB schema migrations
-├── src/               # API logic (routes, models, controllers)
+├── migrations/        # Database schema & migrations
+├── src/               # Main API logic (routes, models, services)
+├── .env               # Environment configuration
 ├── .gitignore
-└── Cargo.toml         # Rust package configuration
+└── Cargo.toml         # Rust project configuration
 ```
 
 ---
@@ -50,9 +54,9 @@ git clone https://github.com/Dipzz-newbie/backend-content-manage.git
 cd backend-content-manage
 ```
 
-### 2. Configure Environment
+### 2. Setup Environment Variables
 
-Create a `.env` file and configure your database and application settings.
+Create a `.env` file in the root directory:
 
 ```env
 DATABASE_URL=postgres://user:password@localhost/db_name
@@ -62,7 +66,7 @@ PORT=8080
 ### 3. Run Migrations
 
 ```bash
-diesel migration run  # or the tool you're using
+diesel migration run  # or use sqlx / refinery depending on setup
 ```
 
 ### 4. Build and Run the Server
@@ -71,29 +75,247 @@ diesel migration run  # or the tool you're using
 cargo run
 ```
 
-API will be available at: `http://localhost:8080`
+The API will be available at:
+
+```
+http://localhost:8080
+```
 
 ---
 
-## 📨 Example API Endpoints
+## 📬 API Endpoints Overview
 
-| Method | Endpoint      | Description          |
-| ------ | ------------- | -------------------- |
-| GET    | `/posts`      | Get all posts        |
-| POST   | `/posts`      | Create new post      |
-| PUT    | `/posts/{id}` | Update existing post |
-| DELETE | `/posts/{id}` | Delete post by ID    |
+### 🔹 Posts
 
-## FUll DOCS !!!
+| Method | Endpoint      | Description         |
+| ------ | ------------- | ------------------- |
+| GET    | `/posts`      | Get all posts       |
+| POST   | `/posts`      | Create a new post   |
+| PUT    | `/posts/{id}` | Update a post by ID |
+| DELETE | `/posts/{id}` | Delete a post by ID |
 
-# Address API Spec
+---
 
-## Create Address API
+## 📇 Contact API
 
-Endpoint : POST /api/contacts/:contactId/addresses
+### 🔸 Create Contact
 
-Headers :
-- Authorization : token
+
+```http
+POST /api/contacts
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Request Body :
+
+```json
+{
+  "first_name" : "Dipzz",
+  "last_name" : "Muhh",
+  "email" : "dipzz@example.com",
+  "phone" : "32423423434"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "first_name" : "Dipzz",
+    "last_name" : "Muhh",
+    "email" : "dipz@example.com",
+    "phone" : "32423423434"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Email is not valid format"
+}
+```
+
+### 🔸 Update Contact
+
+```http
+PUT /api/contacts/:id
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Request Body :
+
+```json
+{
+  "first_name" : "Muhh",
+  "last_name" : "Dipzz",
+  "email" : "dipzz@pzn.com",
+  "phone" : "32423423434"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "first_name" : "Muhh",
+    "last_name" : "Dipzz",
+    "email" : "dipzz@example.com",
+    "phone" : "32423423434"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Email is not valid format"
+}
+```
+
+**Same format as create.**
+
+### 🔸 Get Contact
+
+```http
+GET /api/contacts/:id
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success :
+
+```json
+{
+  "data" : {
+    "id" : 1,
+    "first_name" : "Dipzz",
+    "last_name" : "Muhh",
+    "email" : "dipzz@example.com",
+    "phone" : "32423423434"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Contact is not found"
+}
+```
+
+
+
+### 🔸 Search Contacts
+
+```http
+GET /api/contacts
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Query params: 
+- name : Search by first_name or last_name, using like, **optional** 
+- email : Search by email using like, **optional** 
+- phone : Search by phone using like, **optional** 
+- page : number of page, default 1 
+- size : size per page, default 10 Response Body Success 
+
+Response Body Success :
+
+```json
+{
+  "data" : [
+    {
+      "id" : 1,
+      "first_name" : "Muhh",
+      "last_name" : "Dipzz",
+      "email" : "dipzz@example.com",
+      "phone" : "32423423434"
+    },
+    {
+      "id" : 2,
+      "first_name" : "Muhh",
+      "last_name" : "Dipzz",
+      "email" : "Dipzz@example.com",
+      "phone" : "32423423434"
+    }
+  ],
+  "paging" : {
+    "page" : 1,
+    "total_page" : 3,
+    "total_item" : 30
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Email is not valid format"
+}
+```
+
+### 🔸 Delete Contact
+
+```http
+DELETE /api/contacts/:id
+```
+
+**Headers:**
+
+* `Authorization: token`
+
+Response Body Success :
+
+```json
+{
+  "data" : "OK"
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "errors" : "Contact is not found"
+}
+```
+
+---
+
+## 🏠 Address API
+
+All endpoints require:
+
+
+### 🔸 Create Address
+
+```http
+POST /api/contacts/:contactId/addresses
+```
+
+**Headers:**
+
+* `Authorization: token`
 
 Request Body :
 
@@ -130,15 +352,17 @@ Response Body Error :
 }
 ```
 
-## Update Address API
+### 🔸 Update Address
 
-Endpoint : PUT /api/contacts/:contactId/addresses/:addressId
+```http
+PUT /api/contacts/:contactId/addresses/:addressId
+```
 
-Headers :
-- Authorization : token
+**Headers:**
+
+* `Authorization: token`
 
 Request Body :
-
 ```json
 {
   "street" : "Jalan apa",
@@ -172,12 +396,15 @@ Response Body Error :
 }
 ```
 
-## Get Address API
+### 🔸 Get Address by ID
 
-Endpoint : GET /api/contacts/:contactId/addresses/:addressId
+```http
+GET /api/contacts/:contactId/addresses/:addressId
+```
 
-Headers :
-- Authorization : token
+**Headers:**
+
+* `Authorization: token`
 
 Response Body Success :
 
@@ -202,12 +429,15 @@ Response Body Error :
 }
 ```
 
-## List Addresses API
+### 🔸 List All Addresses
 
-Endpoint : GET /api/contacts/:contactId/addresses
+```http
+GET /api/contacts/:contactId/addresses
+```
 
-Headers :
-- Authorization : token
+**Headers:**
+
+* `Authorization: token`
 
 Response Body Success :
 
@@ -242,12 +472,15 @@ Response Body Error :
 }
 ```
 
-## Remove Address API
+### 🔸 Delete Address
 
-Endpoint : DELETE /api/contacts/:contactId/addresses/:addressId
+```http
+DELETE /api/contacts/:contactId/addresses/:addressId
+```
 
-Headers :
-- Authorization : token
+**Headers:**
+
+* `Authorization: token`
 
 Response Body Success :
 
@@ -265,73 +498,25 @@ Response Body Error :
 }
 ```
 
+> ✅ Response formats follow a consistent structure with `data` on success and `errors` on failure.
+
 ---
 
-## 🧪 Testing
+## 👤 User API
 
-Run unit and integration tests:
+### 🔸 Register
 
-```bash
-cargo test
+```http
+POST /api/users
 ```
-
-# Contact API Spec
-
-## Create Contact API
-
-Endpoint : POST /api/contacts
-
-Headers : 
-- Authorization : token
 
 Request Body :
 
 ```json
 {
-  "first_name" : "Eko",
-  "last_name" : "Khannedy",
-  "email" : "eko@pzn.com",
-  "phone" : "32423423434"
-}
-```
-
-Response Body Success : 
-
-```json
-{
-  "data" : {
-    "id" : 1,
-    "first_name" : "Eko",
-    "last_name" : "Khannedy",
-    "email" : "eko@pzn.com",
-    "phone" : "32423423434"
-  }
-}
-```
-
-Response Body Error :
-
-```json
-{
-  "errors" : "Email is not valid format"
-}
-```
-
-## Update Contact API
-
-Endpoint : PUT /api/contacts/:id
-
-Headers :
-- Authorization : token
-
-Request Body :
-
-```json
-{
-  "first_name" : "Eko",
-  "last_name" : "Khannedy",
-  "email" : "eko@pzn.com",
-  "phone" : "32423423434"
+  "username": "dipzz",
+  "password": "rahasia",
+  "name": "Muhhdipzz"
 }
 ```
 
@@ -340,142 +525,8 @@ Response Body Success :
 ```json
 {
   "data" : {
-    "id" : 1,
-    "first_name" : "Eko",
-    "last_name" : "Khannedy",
-    "email" : "eko@pzn.com",
-    "phone" : "32423423434"
-  }
-}
-```
-
-Response Body Error :
-
-```json
-{
-  "errors" : "Email is not valid format"
-}
-```
-
-## Get Contact API
-
-Endpoint : GET /api/contacts/:id
-
-Headers :
-- Authorization : token
-
-Response Body Success :
-
-```json
-{
-  "data" : {
-    "id" : 1,
-    "first_name" : "Eko",
-    "last_name" : "Khannedy",
-    "email" : "eko@pzn.com",
-    "phone" : "32423423434"
-  }
-}
-```
-
-Response Body Error :
-
-```json
-{
-  "errors" : "Contact is not found"
-}
-```
-
-## Search Contact API
-
-Endpoint : GET /api/contacts
-
-Headers :
-- Authorization : token
-
-Query params :
-- name : Search by first_name or last_name, using like, optional
-- email : Search by email using like, optional
-- phone : Search by phone using like, optional
-- page : number of page, default 1
-- size : size per page, default 10
-
-Response Body Success :
-
-```json
-{
-  "data" : [
-    {
-      "id" : 1,
-      "first_name" : "Eko",
-      "last_name" : "Khannedy",
-      "email" : "eko@pzn.com",
-      "phone" : "32423423434"
-    },
-    {
-      "id" : 2,
-      "first_name" : "Eko",
-      "last_name" : "Khannedy",
-      "email" : "eko@pzn.com",
-      "phone" : "32423423434"
-    }
-  ],
-  "paging" : {
-    "page" : 1,
-    "total_page" : 3,
-    "total_item" : 30
-  }
-}
-```
-
-Response Body Error :
-
-## Remove Contact API
-
-Endpoint : DELETE /api/contacts/:id
-
-Headers :
-- Authorization : token
-
-Response Body Success :
-
-```json
-{
-  "data" : "OK"
-}
-```
-
-Response Body Error :
-
-```json
-{
-  "errors" : "Contact is not found"
-}
-```
-
-# User API Spec
-
-## Register User API
-
-Endpoint :  POST /api/users 
-
-Request Body :
-
-```json
-{
-  "username" : "pzn",
-  "password" : "rahasia",
-  "name" : "Programmer Zaman Now"
-}
-```
-
-Response Body Success :
-
-```json
-{
-  "data" : {
-    "username" : "pzn",
-    "name" : "Programmer Zaman Now"
+    "username" : "MuhhDipzz",
+    "name" : "Dipzz"
   }
 }
 ```
@@ -488,15 +539,17 @@ Response Body Error :
 }
 ```
 
-## Login User API
+### 🔸 Login
 
-Endpoint : POST /api/users/login
+```http
+POST /api/users/login
+```
 
 Request Body :
 
 ```json
 {
-  "username" : "pzn",
+  "username" : "dipzz",
   "password" : "rahasia"
 }
 ```
@@ -519,18 +572,21 @@ Response Body Error :
 }
 ```
 
-## Update User API
+### 🔸 Update Profile
 
-Endpoint : PATCH /api/users/current
+```http
+PATCH /api/users/current
+```
 
-Headers :
-- Authorization : token 
+**Headers:**
+
+* `Authorization: token`
 
 Request Body :
 
 ```json
 {
-  "name" : "Programmer Zaman Now Lagi", // optional
+  "name" : "newName", // optional
   "password" : "new password" // optional
 }
 ```
@@ -540,8 +596,8 @@ Response Body Success :
 ```json
 {
   "data" : {
-    "username" : "pzn",
-    "name" : "Programmer Zaman Now Lagi"
+    "username" : "Dipzz",
+    "name" : "newName"
   }
 }
 ```
@@ -554,20 +610,23 @@ Response Body Error :
 }
 ```
 
-## Get User API
+### 🔸 Get Current User
 
-Endpoint : GET /api/users/current
+```http
+GET /api/users/current
+```
 
-Headers :
-- Authorization : token
+**Headers:**
+
+* `Authorization: token`
 
 Response Body Success:
 
 ```json
 {
   "data" : {
-    "username" : "pzn",
-    "name" : "Programmer Zaman Now"
+    "username" : "MuhhDipzz",
+    "name" : "Dipzz"
   }
 }
 ```
@@ -580,12 +639,15 @@ Response Body Error :
 }
 ```
 
-## Logout User API
+### 🔸 Logout
 
-Endpoint : DELETE /api/users/logout
+```http
+DELETE /api/users/logout
+```
 
-Headers :
-- Authorization : token
+**Headers:**
+
+* `Authorization: token`
 
 Response Body Success : 
 
@@ -605,24 +667,38 @@ Response Body Error :
 
 ---
 
-## 👨‍💻 Contributing
+## 🧪 Testing
 
-1. Fork this repo
-2. Create your feature branch (`git checkout -b feature/awesome`)
-3. Commit your changes (`git commit -m 'Add awesome feature'`)
-4. Push to the branch (`git push origin feature/awesome`)
+To run unit and integration tests:
+
+```bash
+cargo test
+```
+
+---
+
+## 🙌 Contributing
+
+We welcome contributions!
+
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -m "Add my feature"`
+4. Push your branch: `git push origin feature/my-feature`
 5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-This project is open-source and available under the [MIT License](LICENSE).
+Licensed under the [MIT License](LICENSE).
 
 ---
 
-## 🙌 Acknowledgements
+## 🙏 Acknowledgements
 
-Built as a learning project using Rust and backend principles. Feel free to use, modify, and contribute.
+Built as a backend learning project using **Rust**, **Actix**, and **PostgreSQL**. Contributions and feedback are welcome!
 
 ---
+
+Let me know if you want this turned into a `README.md` file or need badges (e.g., GitHub Actions, Rust version, etc.) added to the top!

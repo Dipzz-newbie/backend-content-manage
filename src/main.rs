@@ -8,11 +8,12 @@ mod validation;
 
 use axum::{
     Router,
+    http::{Method, HeaderValue, HeaderName},
     routing::{get, post, put, patch, delete},
 };
 use sqlx::mysql::MySqlPoolOptions;
 use std::sync::Arc;
-use tower_http::trace::TraceLayer;
+use tower_http::{trace::TraceLayer, cors::{CorsLayer, AllowOrigin}};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 use crate::database::AppState;
@@ -77,11 +78,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             auth_middleware,
         ));
 
+    // ✅ CORS configuration
+    let allowed_origins = AllowOrigin::list([
+        HeaderValue::from_static("http://localhost:5173")
+    ]);
+
+    let cors = CorsLayer::new()
+        .allow_origin(allowed_origins)
+        .allow_methods([Method::GET, Method::POST, Method::PUT, Method::PATCH, Method::DELETE])
+        .allow_headers([
+            HeaderName::from_static("content-type"),
+            HeaderName::from_static("authorization"),
+        ]);
+
     // Combine routes
     let app = Router::new()
         .merge(public_routes)
         .merge(protected_routes)
         .layer(TraceLayer::new_for_http())
+        .layer(cors) // ✅ CORS diaktifkan di sini!
         .with_state(state);
 
     let port = std::env::var("SERVER_PORT")
@@ -89,7 +104,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = format!("0.0.0.0:{}", port);
     let listener = tokio::net::TcpListener::bind(&addr).await?;
 
-    tracing::info!("Server listening on {}", addr);
+    tracing::info!("🚀 Server listening on {}", addr);
 
     axum::serve(listener, app).await?;
 
